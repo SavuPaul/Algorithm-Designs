@@ -1,4 +1,4 @@
-# README - Tema1 PA
+# README - Project 1 - Algorithm Design
 
 For the implementation of each task, I used the laboratory skeleton for data reading and outputting results.
 
