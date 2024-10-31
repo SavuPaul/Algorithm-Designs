@@ -1,109 +1,86 @@
-README - Tema1 PA
+# README - Tema1 PA
 
-Pentru implementarea fiecarui task, am folosit scheletul de laborator pentru citirea de date si furnizarea rezultatului.
+For the implementation of each task, I used the laboratory skeleton for data reading and outputting results.
 
-------------------------------------------------------------------------------------------------------------------------
+---
 
-Problema 1: Servere
+## Problem 1: Servers
 
-Implementarea problemei se bazeaza pe o cautare binara executata in range-ul dintre limita minima si cea maxima de
-alimentare. Functia getValues calculeaza valorile puterilor serverlor in punctul x dat ca parametru. Astfel, pentru
-fiecare nou mijloc selectat, se calculeaza valoarea minima atat la stanga cat si la dreapta sa cu o unitate. Scopul
-cautarii este de a gasi maximul global in range-ul de valori, cautarea oprindu-se fie cand left > right, fie cand
-s-a gasit un punct de maxim (unde valoarea minima este mai mare decat cea de la stanga si dreapta cu o unitate).
-Cautarea binara: Daca valoarea minima calculata in mid este mai mare decat cea din mid - 1, dar mai mica decat cea
-                din mid + 1, atunci cautarea continua in dreapta, altfel se continua in stanga.
-In momentul in care se gaseste o valoare maxima globala (result), se calculeaza minimul pentru (result + 0.5) si
-(result - 0.5). Stim ca valoarea punctului in care calculam expresiile puterilor serverelor poate atinge un minim
-maximizat doar in numere de forma x.0 sau x.5 (pentru alte posibilitati de valori, nu s-ar atinge valorea cautata).
-Ulterior, rezultatul va fi valoarea minima maximizata a puterilor calculata intre result - 0.5, result, result + 0.5.
+The implementation of this problem relies on a binary search executed within the range of the minimum and maximum power limits. The `getValues` function calculates the server power values at the point `x` given as a parameter. For each new midpoint selected, it calculates the minimum value to the left and right of it by one unit. The search aims to find the global maximum within the range of values, stopping either when `left > right` or when a maximum point is found (where the minimum value is greater than the neighboring values at left and right by one unit).
 
-Complexitate: O(log n)
+**Binary Search**: If the minimum value calculated at `mid` is greater than that at `mid - 1` but less than that at `mid + 1`, the search continues to the right; otherwise, it continues to the left.  
+Once a global maximum value (`result`) is found, we calculate the minimum for (`result + 0.5`) and (`result - 0.5`). We know that the value at the point where we calculate the server power expressions can only reach a maximized minimum at values of the form `x.0` or `x.5` (for other possible values, the target value would not be reached). Finally, the result will be the maximized minimum power value calculated between `result - 0.5`, `result`, and `result + 0.5`.
 
-------------------------------------------------------------------------------------------------------------------------
+**Complexity**: O(log n)
 
-Problema 2: Colorare
+---
 
-Problema se poate rezolva doar prin formule matematice, intrucat stim cum este afectat rezultatul curent in functie de
-orientarea piesei pe care o adaugam, si de culoarea sa. Se porneste de la un caz de baza (adica prima piesa):
-1. PIESA ORIZONTALA -> apar 6 cazuri diferite de colorare
-2. PIESA VERTICALA -> apar 3 cazuri diferite de colorare
-Ulterior, pentru actualizarea numarului de posibilitati, analizam piesa curenta si piesa anterioara. 
-1) Daca piesa curenta este orizontala:
-    1.1) Daca piesa anterioara este orizontala, atunci numarul de posibilitati se inmulteste cu 3.
-    1.2) Daca piesa anterioara este verticala, atunci numarul de posibilitati se inmulteste cu 2 (pentru PRIMA
-         piesa verticala adugata), si apoi cu 3 pentru restul.
-2) Daca pisa curenta este verticala:
-    2.1) Daca piesa anterioara este orizontala, atunci numarul de posibilitati se inmulteste cu 2 pentru X - 1
-         piese verticale (deoarece exista o singura posibilitate de colorare a piesei verticale dupa una orizontala,
-         astfel prima inmultire ar fi cu 1, deci nu o luam in calcul).
-    2.2) Daca piesa anterioara este verticala, atunci numarul de posibilitati se inmulteste cu 2.
+## Problem 2: Coloring
 
-Toate inmultirile cu puteri ale lui 2 si 3 au fost calculate cu o functie auxiliara bazata pe divide et impera.
+This problem can be solved using mathematical formulas since we know how the current result is affected based on the orientation and color of the piece being added. We start with a base case (i.e., the first piece):
 
-Complexitate: O(n * log n)
+1. **Horizontal Piece** -> 6 different coloring cases appear
+2. **Vertical Piece** -> 3 different coloring cases appear
 
-------------------------------------------------------------------------------------------------------------------------
+Subsequently, for updating the number of possibilities, we analyze the current and previous piece:
+1. If the current piece is horizontal:
+    1.1) If the previous piece is horizontal, then the number of possibilities multiplies by 3.
+    1.2) If the previous piece is vertical, then the number of possibilities multiplies by 2 (for the **first** vertical piece added) and then by 3 for the rest.
+    
+2. If the current piece is vertical:
+    2.1) If the previous piece is horizontal, then the number of possibilities multiplies by 2 for `X - 1` vertical pieces (since there is only one possible coloring of the vertical piece after a horizontal one, the first multiplication would be by 1, so it is not counted).
+    2.2) If the previous piece is vertical, the number of possibilities multiplies by 2.
 
-Problema 3: Compresie
+All multiplications with powers of 2 and 3 were calculated using an auxiliary function based on divide and conquer.
 
-Problema de compresie analizeaza cele 2 siruri simultan, fiind parcurse alternativ astfel:
-a) Daca A[i] > B[i], atunci parcurgem B pana cand suma elementelor parcurse devine mai mare sau egala decat A[i].
-   De asemenea, pe masura ce se adaugame elemente la suma, acestea sunt si sterse din sir.
-   Daca suma este chiar A[i], atunci ne mutam mai departe in ambele siruri intrucat elementele au devenit egale.
-b) Daca A[i] < B[i], atunci parcurgem A pana cand suma elementelor parcurse devine mai mare sau egala decat B[i].
-   De asemenea, pe masura ce se adaugame elemente la suma, acestea sunt si sterse din sir.
-   Daca suma este chiar B[i], atunci ne mutam mai departe in ambele siruri intrucat elementele au devenit egale.
-c) Daca A[i] == B[i] inca de la inceput, ne mutam mai departe in ambele siruri.
-Algoritmul va alterna intre aceste 3 conditii si va maximiza lungimea sirurilor, facandu-le totodata egale. Daca
-la final, sirul A difera de sirul B, atunci nu se poate efectua compresia, deci se returneaza -1, altfel se returneaza
-dimensiunea oricarui dintre cele 2 siruri.
+**Complexity**: O(n * log n)
 
-Complexitate: O(n) intrucat parcurgerea se efectueaza o singura data, simultan, atat in functia de compresie cat si in
-              cea de verificare a egalitatii sirurilor.
+---
 
-------------------------------------------------------------------------------------------------------------------------
+## Problem 3: Compression
 
-Problema 4: Criptat
+The compression problem analyzes both arrays simultaneously, traversing them in an alternating manner as follows:
 
-Pentru fiecare dintre cele maxim 8 litere diferite prezente in cuvinte se va executa urmatorul algoritm:
-Fiecarui cuvant i se asociaza un raport: numar_aparitii_litera / lungime_cuvant. Aceste rapoarte sunt introduse intr-un
-vector (values) care este ordonat descrescator. Cu cat valoarea raportului este mai aproape de 1, cu atat inseamna ca 
-acel cuvant este mai probabil sa fie folosit in parola de lungime maxima cu litera respectiva.
-Ulterior, fiecare cuvant este adaugat intr-o lista de map-uri. Am folosit o lista de map-uri intrucat map-urile nu
-tolereaza aparitia unui element de 2 sau mai multe ori, iar problema nu precizeaza ca un cuvant apare o singura data in
-lista de cuvinte. Cu alte cuvinte, lista va contine map-uri cu cate un singur element, acestea fiind marcate cu 0.
-Apoi, in functia computeList, pentru fiecare valoare din values, iteram prin lista de map-uri pana cand este gasit un 
-cuvant care are raportul respectiv. Odata gasit, este adaugat intr-un array de cuvinte ordonate, si este marcat cu 1
-pentru a nu-l mai folosi in cazul in care exista rapoarte care apar de 2 sau mai multe ori. (Spre exemplu executam
-pentru litera a: cuvintele "ban" si "balcan" au ambele raportul 0.5, dar difera in lungime, deci contribuie diferit la
-formarea parolei finale).
-Odata ordonate, formam parola finala iterand prin array-ul de cuvinte si adaugam cuvinte la parola cat timp litera
-pe baza careia formam parola apare de mai mult de password_length / 2 ori.
-Rezultatul final va fi lungimea maxima a parolei calculate pentru toate literele existente.
+- **If** `A[i] > B[i]`, traverse `B` until the sum of traversed elements is greater than or equal to `A[i]`. As elements are added to the sum, they are also removed from the array. If the sum exactly equals `A[i]`, move forward in both arrays as the elements have become equal.
+  
+- **If** `A[i] < B[i]`, traverse `A` until the sum of traversed elements is greater than or equal to `B[i]`. As elements are added to the sum, they are also removed from the array. If the sum exactly equals `B[i]`, move forward in both arrays as the elements have become equal.
 
-Complexitate: O(n^3 * log n) - tinand cont ca map-urile din lista contin mereu doar o singura pereche, acestea 
-                               constituie o diferenta minimala in complexitatea temporala a algoritmului. Totusi,
-                               luand in calcul si acest aspect, complexitatea ar fi O(n^4 * log n).
+- **If** `A[i] == B[i]` at the start, move forward in both arrays.
 
-------------------------------------------------------------------------------------------------------------------------
+The algorithm alternates between these three conditions, maximizing the length of the arrays and making them equal. If, at the end, `A` differs from `B`, then compression is not possible, and `-1` is returned; otherwise, the size of either array is returned.
 
-Problema 5: Oferta
+**Complexity**: O(n) because traversal is performed only once, both in the compression function and in the array equality check.
 
-Problema se rezuma la o matrice de dimensiune N * N unde elementele de pe diagonala pricipala sunt preturile obiectelor.
-Aceasta este completata doar in partea superioara, iar elementele de forma dp[i][j] reprezinta pretul minim posibil
-calculat de la pozitia i la pozitia j.
-Implementarea este recursiva, iar solutiile se calculeaza unele pe baza celorlalte. Exista 2 cazuri de baza pe baza
-carora se pot calcula toate solutiile, si anume cand i == j (adica este pretul in sine) sau cand j - i == 1, adica cand
-se aplica regula de reducere a produsului cel mai ieftin cu 50% dintre cele 2 produse grupate.
+---
 
-Fie A, B, C o secventa de 3 produse pe banda.
-Pentru j - i == 3, se alege pretul minim din 3 cazuri, astfel:
-(A, B), C sau A, (B, C) sau (A, B, C), unde parantezarea reprezinta gruparea produselor
+## Problem 4: Encrypted
 
-Pentru j - i > 3, putem imparti problema in subprobleme calculate anterior, dar numai ultimele produse adaugate sunt de
-interes pentru gruparea cat mai eficienta. De exemplu avem produsele: A, B, C, D, E, F, G, H. Pentru a calcula
-rezultatul final (dp[1][8]), acesta este minimul dintre dp[1][4] + dp[5][8] sau dp[1][5] + dp[6][8] sau dp[1][6] +
-+ dp[7][8]. La randul lor, acestea sunt calculate recursiv.
+For each of the maximum 8 different letters present in the words, the following algorithm is executed:
 
-Complexitate: Algoritmul este foarte ineficient chiar si pentru valori mai mici ale lui N.
+Each word is assigned a ratio: `letter_occurrences / word_length`. These ratios are introduced into a vector (`values`) sorted in descending order. The closer the ratio is to 1, the more likely that word is used in the maximum-length password with the respective letter.
+
+Subsequently, each word is added to a list of maps. A list of maps was used because maps do not tolerate duplicate elements, and the problem does not specify that a word appears only once in the word list. In other words, the list will contain maps with a single element each, marked with `0`. 
+
+Then, in the `computeList` function, for each value in `values`, we iterate through the list of maps until a word with the respective ratio is found. Once found, it is added to an ordered word array and marked with `1` to avoid reusing it if ratios appear multiple times. For example, if executing for letter `a`, the words “ban” and “balcan” both have a ratio of 0.5 but differ in length, thus contributing differently to the final password.
+
+Once ordered, we form the final password by iterating through the word array and adding words to the password as long as the letter upon which the password is formed appears more than `password_length / 2` times.  
+The final result will be the maximum length of the password calculated for all existing letters.
+
+**Complexity**: O(n^3 * log n) - considering that maps in the list always contain only a single pair, they represent a minimal difference in the time complexity of the algorithm. However, factoring this in, the complexity would be O(n^4 * log n).
+
+---
+
+## Problem 5: Offer
+
+This problem reduces to an `N * N` matrix where the elements on the main diagonal represent the prices of the items. It is only filled in the upper part, and elements in the form `dp[i][j]` represent the minimum price possible calculated from position `i` to position `j`.
+
+The implementation is recursive, and solutions are calculated based on each other. There are two base cases on which all solutions can be calculated:
+1. **If `i == j`** (i.e., the price itself)  
+2. **If `j - i == 1`**, when applying the rule of reducing the cheaper product by 50% among the two grouped products.
+
+For `j - i == 3`, the minimum price is chosen among three cases:
+- `(A, B), C` or `A, (B, C)` or `(A, B, C)`, where parentheses represent product grouping.
+
+For `j - i > 3`, the problem can be divided into previously calculated subproblems, but only the last products added are relevant for optimal grouping. For example, for the products `A, B, C, D, E, F, G, H`, to calculate the final result (`dp[1][8]`), it will be the minimum between `dp[1][4] + dp[5][8]`, `dp[1][5] + dp[6][8]`, or `dp[1][6] + dp[7][8]`. These, in turn, are recursively calculated.
+
+**Complexity**: The algorithm is highly inefficient even for smaller values of `N`.
